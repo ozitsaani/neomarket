@@ -2791,3 +2791,41 @@ a {
         min-height: 24px !important;
     }
 }
+.simple-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.simple-pagination .page-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 90px;
+    padding: 10px 16px;
+    border: var(--border);
+    border-radius: 999px;
+    background: var(--card);
+    box-shadow: var(--shadow-sm);
+    font-size: 14px;
+    font-weight: 900;
+    text-decoration: none;
+    color: var(--black);
+}
+
+.simple-pagination .page-btn:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 var(--black);
+}
+
+.simple-pagination .page-btn.disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.simple-pagination .page-info {
+    font-size: 14px;
+    font-weight: 800;
+}

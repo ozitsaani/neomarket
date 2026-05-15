@@ -92,7 +92,23 @@
         @endforelse
     </section>
 
-    <div class="shop-pagination">
-        {{ $products->links() }}
+    @if ($products->hasPages())
+    <div class="shop-pagination simple-pagination">
+        @if ($products->onFirstPage())
+            <span class="page-btn disabled">Previous</span>
+        @else
+            <a href="{{ $products->previousPageUrl() }}" class="page-btn">Previous</a>
+        @endif
+
+        <span class="page-info">
+            Halaman {{ $products->currentPage() }} dari {{ $products->lastPage() }}
+        </span>
+
+        @if ($products->hasMorePages())
+            <a href="{{ $products->nextPageUrl() }}" class="page-btn">Next</a>
+        @else
+            <span class="page-btn disabled">Next</span>
+        @endif
     </div>
+@endif
 @endsection
