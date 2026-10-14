@@ -1,0 +1,43 @@
+
+name: Deploy NeoMarket
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-neomarket-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy to Dahono VPS
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy over SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          port: ${{ secrets.VPS_PORT }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script_stop: true
+          script: |
+            set -eu
+            cd /var/www/sites/neomarket
+
+            git fetch origin main
+            git reset --hard origin/main
+
+            composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction
+
+            php artisan migrate --force
+            php artisan optimize:clear
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache
+
+            echo "NeoMarket deployment selesai."
